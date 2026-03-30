@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chris Madejczyk — Engineering Physics</title>
+<title>Chris Madejczyk - Engineering Physics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
 <style>
@@ -170,7 +170,6 @@
     color: #fff;
   }
 
-  /* Hero visual — abstract geometric representing engineering */
   .hero-visual {
     display: flex;
     align-items: center;
@@ -181,6 +180,80 @@
     width: 100%;
     max-width: 420px;
     opacity: 0.85;
+  }
+
+  .stats-block {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .stat-card {
+    background: #eae6de;
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .stat-divider {
+    width: 28px;
+    height: 2px;
+    background: var(--highlight);
+    border-radius: 1px;
+    margin-bottom: 10px;
+  }
+
+  .stat-number {
+    font-family: var(--display);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .tools-card {
+    background: #eae6de;
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tools-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .tool-pill {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    padding: 4px 10px;
+    border-radius: 2px;
+    background: #d9d4c9;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    border: none;
+  }
+
+  .tool-pill.highlight {
+    background: var(--accent);
+    color: #c8daf0;
   }
 
   /* SECTION BASE */
@@ -580,10 +653,10 @@
     <h1>Chris<br>Madejczyk</h1>
     <p class="hero-desc">
       Engineering Physics graduate with a Minor in Nuclear Engineering,
-      pivoting into power and nuclear engineering. Background in thermal
+      passionate about power and nuclear engineering. Background in thermal
       analysis, FEA, embedded control systems, and cloud infrastructure.
     </p>
-    <div class="hero-location">📍 Burlington, ON — Open to relocation</div>
+    <div class="hero-location">📍 Toronto, ON</div>
     <div class="hero-ctas">
       <a href="#contact" class="btn btn-primary">Get in touch</a>
       <a href="#projects" class="btn btn-outline">View projects</a>
@@ -591,35 +664,34 @@
   </div>
 
   <div class="hero-visual">
-    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" fill="none">
-      <!-- Abstract engineering / circuit / atom diagram -->
-      <circle cx="200" cy="200" r="130" stroke="#1a3a5c" stroke-width="1" stroke-dasharray="4 6" opacity="0.3"/>
-      <circle cx="200" cy="200" r="90" stroke="#1a3a5c" stroke-width="1" opacity="0.15"/>
-      <circle cx="200" cy="200" r="50" stroke="#c8842a" stroke-width="1.5" opacity="0.4"/>
-      <circle cx="200" cy="200" r="8" fill="#1a3a5c" opacity="0.6"/>
-      <!-- Orbit ellipses -->
-      <ellipse cx="200" cy="200" rx="130" ry="45" stroke="#2e6b4f" stroke-width="1" opacity="0.25" transform="rotate(30 200 200)"/>
-      <ellipse cx="200" cy="200" rx="130" ry="45" stroke="#2e6b4f" stroke-width="1" opacity="0.25" transform="rotate(-30 200 200)"/>
-      <!-- Nodes -->
-      <circle cx="330" cy="200" r="6" fill="#c8842a" opacity="0.7"/>
-      <circle cx="70"  cy="200" r="6" fill="#c8842a" opacity="0.7"/>
-      <circle cx="200" cy="70"  r="5" fill="#1a3a5c" opacity="0.5"/>
-      <circle cx="200" cy="330" r="5" fill="#1a3a5c" opacity="0.5"/>
-      <!-- Cross hairs -->
-      <line x1="200" y1="30" x2="200" y2="370" stroke="#1a3a5c" stroke-width="0.5" opacity="0.12"/>
-      <line x1="30" y1="200" x2="370" y2="200" stroke="#1a3a5c" stroke-width="0.5" opacity="0.12"/>
-      <!-- Corner ticks -->
-      <line x1="30" y1="30" x2="50" y2="30" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="30" y1="30" x2="30" y2="50" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="370" y1="30" x2="350" y2="30" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="370" y1="30" x2="370" y2="50" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="30" y1="370" x2="50" y2="370" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="30" y1="370" x2="30" y2="350" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="370" y1="370" x2="350" y2="370" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <line x1="370" y1="370" x2="370" y2="350" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
-      <!-- Label -->
-      <text x="200" y="385" text-anchor="middle" font-family="Source Code Pro" font-size="9" fill="#8a8078" letter-spacing="3">ENG. PHYSICS</text>
-    </svg>
+    <div class="stats-block">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-divider"></div>
+          <div class="stat-number">3+</div>
+          <div class="stat-label">Years experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-divider"></div>
+          <div class="stat-number">4</div>
+          <div class="stat-label">Projects shipped</div>
+        </div>
+      </div>
+      <div class="tools-card">
+        <div class="stat-label">Tools &amp; technologies</div>
+        <div class="tools-pills">
+          <span class="tool-pill highlight">AWS</span>
+          <span class="tool-pill highlight">Python</span>
+          <span class="tool-pill highlight">FEA / Nastran</span>
+          <span class="tool-pill">ESP32 / STM32</span>
+          <span class="tool-pill">Docker</span>
+          <span class="tool-pill">SolidWorks</span>
+          <span class="tool-pill">MATLAB</span>
+          <span class="tool-pill">C</span>
+          <span class="tool-pill">SQL</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -633,11 +705,11 @@
         I'm an Engineering Physics graduate from McMaster University with a Minor in Nuclear
         Engineering, currently making the transition into power systems and nuclear engineering.
         My academic background spans thermodynamics, reactor theory, power plant systems,
-        electromagnetics, and control systems — paired with hands-on experience in FEA,
+        electromagnetics, and control systems, paired with hands-on experience in FEA,
         CAD design, and embedded systems.
       </p>
       <p>
-        My capstone project — a self-regulating modular greenhouse — required integrated
+        My capstone project, a self-regulating modular greenhouse, required integrated
         analysis across thermal physics, structural mechanics, and embedded control systems,
         and is the most complete demonstration of how I approach engineering problems:
         model first, build second, validate both.
@@ -645,7 +717,7 @@
       <p>
         I also have 3+ years of professional experience in software engineering and AWS
         cloud infrastructure, which gives me a practical edge in roles that sit at the intersection
-        of physical engineering and digital systems — SCADA, energy management, digital
+        of physical engineering and digital systems: SCADA, energy management, digital
         instrumentation and control.
       </p>
     </div>
@@ -731,7 +803,6 @@
   <h2>Projects</h2>
   <div class="projects-grid">
 
-    <!-- Greenhouse — links to subpage -->
     <a href="greenhouse/index.html" class="project-card fade">
       <img src="greenhouse/greenhouse_2.jpg" alt="Smart Modular Greenhouse" class="project-card-thumb">
       <div class="project-card-body">
@@ -742,38 +813,27 @@
       </div>
     </a>
 
-    <!-- Nimble CloudOps -->
-    <div class="project-card fade fade-delay-1" style="cursor:default;">
-      <div class="project-card-thumb-placeholder">NIMBLE CLOUDOPS</div>
-      <div class="project-card-body">
-        <div class="project-card-label">Personal Project · Dec 2025 – Jan 2026</div>
-        <h3>Nimble CloudOps Platform</h3>
-        <p>High-throughput AWS backend platform handling 2,000+ req/min at &lt;150ms latency. Containerised microservices on ECS with JWT/RBAC auth, PostgreSQL, CI/CD, and 99.9% uptime.</p>
-        <span class="project-link" style="color:var(--muted);">Backend infrastructure project</span>
-      </div>
-    </div>
-
     <!-- RuneLite -->
-    <div class="project-card fade fade-delay-2" style="cursor:default;">
-      <div class="project-card-thumb-placeholder">RUNELITE OSS</div>
+    <a href="https://github.com/runelite/runelite" target="_blank" class="project-card fade fade-delay-2">
+      <img src="runelite.jpg" alt="RuneLite Open Source Contributions" class="project-card-thumb">
       <div class="project-card-body">
         <div class="project-card-label">Open Source · Feb – May 2025</div>
         <h3>RuneLite Open Source Contributions</h3>
         <p>Java bug fixes shipped to 400,000+ daily active users. Resolved a multi-year overlay geometry issue and a plugin display regression affecting one of the client's most-used features.</p>
-        <span class="project-link"><a href="https://github.com/runelite/runelite" target="_blank" style="color:var(--accent);text-decoration:none;">github.com/runelite →</a></span>
+        <span class="project-link">github.com/runelite →</span>
       </div>
-    </div>
+    </a>
 
     <!-- Burgerdle -->
-    <div class="project-card fade fade-delay-3" style="cursor:default;">
-      <div class="project-card-thumb-placeholder">BURGERDLE</div>
+    <a href="https://burgerdle.com" target="_blank" class="project-card fade fade-delay-3">
+      <img src="burgerdle.png" alt="Burgerdle" class="project-card-thumb">
       <div class="project-card-body">
         <div class="project-card-label">Personal Project · Apr – Jun 2025</div>
         <h3>Burgerdle</h3>
-        <p>Daily fast food guessing game built with React. Features practice mode, mobile support, persistent game state, and a tutorial. Designed and shipped end-to-end.</p>
-        <span class="project-link"><a href="https://burgerdle.com" target="_blank" style="color:var(--accent);text-decoration:none;">burgerdle.com →</a></span>
+        <p>Daily fast food guessing game built with HTML. Features practice mode, mobile support, persistent game state, and a tutorial. Designed and shipped end-to-end.</p>
+        <span class="project-link">burgerdle.com →</span>
       </div>
-    </div>
+    </a>
 
   </div>
 </section>
@@ -791,7 +851,7 @@
           <div class="exp-org">Angry Burly Bros</div>
         </div>
         <div class="exp-body">
-          <h3>Associate Software Engineer</h3>
+          <h3>Software Engineer</h3>
           <p>Designed and maintained 6+ backend services and automated AWS data pipelines processing 50,000+ events/day for a fast-growing eSports startup, reducing manual reporting overhead by 70%.</p>
           <p>Architected scalable AWS live-streaming infrastructure and built a Python-based scoreboard system integrating broadcasting software and tournament bracket platforms for live competitive events.</p>
         </div>
@@ -810,12 +870,25 @@
 
       <div class="exp-item fade">
         <div class="exp-meta">
-          <div class="exp-dates">Apr 2025<br>Jun 2025</div>
+          <div class="exp-dates">Apr 2025<br>Mar 2026</div>
           <div class="exp-org">Self</div>
         </div>
         <div class="exp-body">
-          <h3>Freelance Web Developer — Burgerdle</h3>
+          <h3>Freelance Web Developer</h3>
           <p>Designed and shipped a full-featured daily guessing game with React, JavaScript, and CSS. Implemented practice mode, mobile support, and persistent local game state.</p>
+          <p>Shipped a website for a bookkeeping firm in Ontario, implementing contact, customer review, and service subpages.</p>
+
+        </div>
+      </div>
+
+      <div class="exp-item fade">
+        <div class="exp-meta">
+          <div class="exp-dates">Jan 2026<br>Present</div>
+          <div class="exp-org">Museums of Burlington</div>
+        </div>
+        <div class="exp-body">
+          <h3>Volunteer Worker</h3>
+          <p>Set up and facilitated seasonal public events including Family Day and Easter, guiding visitors through activities and ensuring a smooth experience for attendees of all ages.</p>
         </div>
       </div>
 
@@ -830,16 +903,16 @@
       <h2>Get in touch</h2>
       <p>
         I'm actively looking for roles in power engineering, nuclear engineering,
-        and energy systems — in Canada or the US. If you're working on something
+        and energy systems in Canada or the US. If you're working on something
         interesting in this space, I'd love to hear from you.
       </p>
     </div>
     <div class="contact-links fade fade-delay-1">
-      <a href="mailto:chrismadejczyk7@gmail.com" class="contact-link">
+      <a href="/cdn-cgi/l/email-protection#b8dbd0cad1cbd5d9dcddd2dbc2c1d38ff8dfd5d9d1d496dbd7d5" class="contact-link">
         <span class="contact-link-icon">✉</span>
         <span class="contact-link-body">
           <span class="contact-link-label">Email</span>
-          <span class="contact-link-value">chrismadejczyk7@gmail.com</span>
+          <span class="contact-link-value"><span class="__cf_email__" data-cfemail="caa9a2b8a3b9a7abaeafa0a9b0b3a1fd8aada7aba3a6e4a9a5a7">[email&#160;protected]</span></span>
         </span>
       </a>
       <a href="https://linkedin.com/in/chris-madejczyk/" target="_blank" class="contact-link">
@@ -864,7 +937,7 @@
   Chris Madejczyk · Burlington, ON · Built with HTML/CSS/JS · 2026
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -873,12 +946,5 @@ const observer = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.fade').forEach(el => {
-  const rect = el.getBoundingClientRect();
-  if (rect.top < window.innerHeight) el.classList.add('visible');
-  else observer.observe(el);
-});
+document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 </script>
-</body>
-</html>

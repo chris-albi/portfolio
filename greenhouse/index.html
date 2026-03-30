@@ -504,7 +504,7 @@
   <p class="hero-desc">
     A self-regulating hydroponic greenhouse designed to maintain stable growing conditions
     across an outdoor ambient temperature range of −20°C to +35°C. Eight months of
-    engineering — from thermal modelling to embedded control systems to physical build.
+    engineering, from thermal modelling to embedded control systems to physical build.
   </p>
   <div class="hero-meta">
     <span class="badge blue">FEA · Nastran</span>
@@ -545,7 +545,7 @@
     The goal was to engineer a modular, self-regulating growing environment capable of
     year-round operation in Northern Canadian climates. The project required integrated
     analysis across thermal physics, structural mechanics, embedded control systems, and
-    hydroponic growing — each informing the others. The system was designed with
+    hydroponic growing, each informing the others. The system was designed with
     scalability in mind: modular units can be combined end-on-end or side-by-side to
     increase growing capacity and passive solar heat intake proportionally.
   </p>
@@ -561,8 +561,8 @@
       <div class="analysis-block">
         <h3>Solar Irradiance Model</h3>
         <p>
-          Using Iqaluit (63.75°N) as the reference latitude — a conservative mid-point
-          for Northern Canada — daily solar irradiance was modelled across a full year
+          Using Iqaluit (63.75°N) as the reference latitude, a conservative mid-point
+          for Northern Canada, daily solar irradiance was modelled across a full year
           using NASA-derived equations for sun declination and daylight duration.
         </p>
         <div class="equation">Θ = 23.5° · sin(2π · dt / 365.25)</div>
@@ -571,7 +571,7 @@
           The daily energy across all polycarbonate faces was computed by integrating
           irradiance over daylight hours. Front and back faces were estimated at roughly
           half the top-face irradiance based on angle of incidence geometry, and 1.6×
-          the surface area — contributing a combined factor of <strong style="color:var(--accent)">2.6E_D</strong> total daily solar intake.
+          the surface area, contributing a combined factor of <strong style="color:var(--accent)">2.6E_D</strong> total daily solar intake.
         </p>
       </div>
 
@@ -593,7 +593,7 @@
 
     <div>
       <div class="chart-container fade-in">
-        <div class="chart-title">Passive Solar Heat Intake — Watts/Day vs. Calendar Date</div>
+        <div class="chart-title">Passive Solar Heat Intake: Watts/Day vs. Calendar Date</div>
         <canvas id="solarChart"></canvas>
         <p style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);margin-top:1rem;line-height:1.6;">
           Peak: ~137 W/day (July) · Minimum: ~10 W/day (January)<br>
@@ -620,7 +620,7 @@
     </p>
     <p>
       Wireless communication was handled by the ESP32's onboard Wi-Fi stack. All hardware
-      connections — sensors, pump relay, heating element control, and LED grow lights — were
+      connections, sensors, pump relay, heating element control, and LED grow lights, were
       hand-soldered to COTS components to minimize cost and maximize integration density
       within the enclosure.
     </p>
@@ -673,11 +673,11 @@
   <div class="photo-grid fade-in">
     <div>
       <img src="grenhouse_1.jpg" alt="Greenhouse front view showing polycarbonate panels, wood frame, and hydroponic tray">
-      <div class="photo-caption">Fig. 1 — Front view: polycarbonate glazing, wood frame, hydroponic tray with drip irrigation</div>
+      <div class="photo-caption">Fig. 1 - Front view: polycarbonate glazing, wood frame, hydroponic tray with drip irrigation</div>
     </div>
     <div>
       <img src="greenhouse_2.jpg" alt="Greenhouse three-quarter view showing pump system, sensor array, and tubing">
-      <div class="photo-caption">Fig. 2 — Three-quarter view: pump system, sensor array, glycol tubing, and hinged access panel</div>
+      <div class="photo-caption">Fig. 2 - Three-quarter view: pump system, sensor array, glycol tubing, and hinged access panel</div>
     </div>
   </div>
 
@@ -717,7 +717,7 @@
   <div class="findings-list fade-in">
     <div class="finding">
       <div class="finding-head">✓ Passive Solar Window</div>
-      <p>Passive solar heating exceeds 80W from May 9 to October 3 — roughly 5 months — sufficient for unaided warm-season growing without supplemental heat.</p>
+      <p>Passive solar heating exceeds 80W from May 9 to October 3 sufficient for unaided warm-season growing without supplemental heat.</p>
     </div>
     <div class="finding">
       <div class="finding-head">✓ Glycol Loop Capacity</div>
@@ -760,20 +760,14 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script>
-// Solar chart — faithfully reproduced from the project's calculation document
-// Equations: Θ = 23.5 * sin(2π*dt/365.25), σ_D = 137 mW/cm² * cos(L - Θ)
-// Daylight: cos(π*TD/24) = -tan(Θ)*tan(L)
-// E_D = σ_D * A * (3600 * TD / π)  [mW/cm² * cm² * s = mJ, then /1000 = J]
-// Total daily watts = E_D_joules * 2.6 / (3600 * TD)  [average watts over daylight hours, scaled for all faces]
+
 const labels = [];
 const data = [];
 const lat = 63.748611;
 const latRad = lat * Math.PI / 180;
-// Top face: 20" x 10" = 50.8cm x 25.4cm
 const A_cm2 = 50.8 * 25.4; // cm²
 
 for (let i = 0; i < 365; i++) {
-  // dt = days from vernal equinox (Apr 21 = day 111)
   const dt = i - 111;
   const theta = 23.5 * Math.sin(2 * Math.PI * dt / 365.25); // degrees
   const thetaRad = theta * Math.PI / 180;

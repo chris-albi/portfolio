@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Modular Greenhouse — Chris Madejczyk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #111720;
+    --border: #1e2d3d;
+    --accent: #4fc3f7;
+    --accent2: #81c784;
+    --accent3: #ffb74d;
+    --text: #cdd6e0;
+    --muted: #5a7080;
+    --heading: #e8f4fd;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --grid-color: rgba(79, 195, 247, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(10,14,20,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2.5rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--text);
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge.green { border-color: var(--accent2); color: var(--accent2); }
+  .badge.blue { border-color: var(--accent); color: var(--accent); }
+  .badge.orange { border-color: var(--accent3); color: var(--accent3); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 2.5rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* SECTIONS */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* OVERVIEW GRID */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 700px) { .overview-grid { grid-template-columns: 1fr; } }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+
+  .stat-card.green::before { background: var(--accent2); }
+  .stat-card.orange::before { background: var(--accent3); }
+  .stat-card.purple::before { background: #ce93d8; }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* PHOTOS */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } }
+
+  .photo-grid img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    display: block;
+    filter: brightness(0.92) saturate(0.9);
+    transition: filter 0.3s;
+  }
+
+  .photo-grid img:hover { filter: brightness(1) saturate(1); }
+
+  .photo-caption {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* VIDEOS */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .video-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .video-card video {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    background: #000;
+  }
+
+  .video-label {
+    padding: 0.75rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ANALYSIS */
+  .analysis-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .analysis-block h3 {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .analysis-block p {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+  }
+
+  .analysis-block p:last-child { margin-bottom: 0; }
+
+  .equation {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent3);
+    background: rgba(255,183,77,0.06);
+    border: 1px solid rgba(255,183,77,0.15);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    letter-spacing: 0.03em;
+    border-radius: 2px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* CHART */
+  .chart-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 1.5rem 0;
+  }
+
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  canvas { width: 100% !important; }
+
+  /* BOM TABLE */
+  .bom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin: 1.5rem 0;
+  }
+
+  .bom-table th {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bom-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(30,45,61,0.5);
+    color: var(--text);
+  }
+
+  .bom-table tr:last-child td {
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    color: var(--accent2);
+    font-weight: 700;
+  }
+
+  .bom-table tr:hover td { background: rgba(79,195,247,0.02); }
+
+  /* FINDINGS */
+  .findings-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 700px) { .findings-list { grid-template-columns: 1fr; } }
+
+  .finding {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--accent2);
+  }
+
+  .finding.warn { border-left-color: var(--accent3); }
+
+  .finding-head {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .finding.warn .finding-head { color: var(--accent3); }
+
+  .finding p { font-size: 0.88rem; line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  footer a {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 750px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">CM / SMG-2024</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#thermal">Thermal</a></li>
+    <li><a href="#control">Control</a></li>
+    <li><a href="#build">Build</a></li>
+    <li><a href="#findings">Findings</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">McMaster University · Capstone Project · 2023–2024</div>
+  <h1>Smart Modular<br><span>Greenhouse</span></h1>
+  <p class="hero-desc">
+    A self-regulating hydroponic greenhouse designed to maintain stable growing conditions
+    across an outdoor ambient temperature range of −20°C to +35°C. Eight months of
+    engineering — from thermal modelling to embedded control systems to physical build.
+  </p>
+  <div class="hero-meta">
+    <span class="badge blue">FEA · Nastran</span>
+    <span class="badge blue">Thermal Analysis</span>
+    <span class="badge green">Embedded C / Python</span>
+    <span class="badge green">ESP32 Control Loop</span>
+    <span class="badge orange">Hydroponics</span>
+    <span class="badge orange">8 months · ~$194 budget</span>
+  </div>
+  <div class="scroll-hint">↓ scroll to explore</div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-label">01 · Overview</div>
+  <h2>Project at a Glance</h2>
+
+  <div class="overview-grid fade-in">
+    <div class="stat-card">
+      <div class="stat-value">55°C</div>
+      <div class="stat-label">Total operating temperature range</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-value">±1°C</div>
+      <div class="stat-label">Temperature regulation tolerance</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-value">$194</div>
+      <div class="stat-label">Total build cost after 20% BOM reduction</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-value">147W</div>
+      <div class="stat-label">Glycol heating loop output capacity</div>
+    </div>
+  </div>
+
+  <p style="font-size:0.95rem; max-width:720px; line-height:1.9;" class="fade-in">
+    The goal was to engineer a modular, self-regulating growing environment capable of
+    year-round operation in Northern Canadian climates. The project required integrated
+    analysis across thermal physics, structural mechanics, embedded control systems, and
+    hydroponic growing — each informing the others. The system was designed with
+    scalability in mind: modular units can be combined end-on-end or side-by-side to
+    increase growing capacity and passive solar heat intake proportionally.
+  </p>
+</section>
+
+<!-- THERMAL ANALYSIS -->
+<section id="thermal">
+  <div class="section-label">02 · Thermal Analysis</div>
+  <h2>Solar & Heat Transfer Modelling</h2>
+
+  <div class="two-col fade-in">
+    <div>
+      <div class="analysis-block">
+        <h3>Solar Irradiance Model</h3>
+        <p>
+          Using Iqaluit (63.75°N) as the reference latitude — a conservative mid-point
+          for Northern Canada — daily solar irradiance was modelled across a full year
+          using NASA-derived equations for sun declination and daylight duration.
+        </p>
+        <div class="equation">Θ = 23.5° · sin(2π · dt / 365.25)</div>
+        <div class="equation">σ_D = 137 mW/cm² · cos(L − Θ)</div>
+        <p>
+          The daily energy across all polycarbonate faces was computed by integrating
+          irradiance over daylight hours. Front and back faces were estimated at roughly
+          half the top-face irradiance based on angle of incidence geometry, and 1.6×
+          the surface area — contributing a combined factor of <strong style="color:var(--accent)">2.6E_D</strong> total daily solar intake.
+        </p>
+      </div>
+
+      <div class="analysis-block">
+        <h3>Glycol Heating System</h3>
+        <p>
+          For winter operation, a 60% propylene glycol mixture (freeze point −52.8°C)
+          was modelled using a 1800 L/h pump, establishing the supplemental heat budget.
+        </p>
+        <div class="equation">q = ṁ · c_p · ΔT</div>
+        <div class="equation">= 0.516 kg/s · 3.563 kJ/kg·°C · 80°C = 147.3 W</div>
+        <p>
+          Convective and radiative losses were evaluated under laminar flow assumptions
+          using Prandtl and Reynolds number analysis referenced against CERN detector
+          cooling data for glycol mixture properties.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="chart-container fade-in">
+        <div class="chart-title">Passive Solar Heat Intake — Watts/Day vs. Calendar Date</div>
+        <canvas id="solarChart"></canvas>
+        <p style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);margin-top:1rem;line-height:1.6;">
+          Peak: ~137 W/day (July) · Minimum: ~10 W/day (January)<br>
+          Viable passive heating window (>80W): May 9 – Oct 3 (~5 months)
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTROL SYSTEM -->
+<section id="control">
+  <div class="section-label">03 · Control System</div>
+  <h2>Embedded Temperature Regulation</h2>
+
+  <div class="analysis-block fade-in">
+    <h3>Architecture</h3>
+    <p>
+      A closed-loop PID-style temperature control system was implemented across two layers:
+      an ESP32 microcontroller running firmware in C for low-level sensor reading and actuator
+      control, communicating continuously with a Python desktop GUI for monitoring, setpoint
+      adjustment, and data logging. The system maintained ±1°C regulation tolerance under
+      steady-state conditions.
+    </p>
+    <p>
+      Wireless communication was handled by the ESP32's onboard Wi-Fi stack. All hardware
+      connections — sensors, pump relay, heating element control, and LED grow lights — were
+      hand-soldered to COTS components to minimize cost and maximize integration density
+      within the enclosure.
+    </p>
+  </div>
+
+  <div class="video-grid fade-in">
+    <div class="video-card">
+      <video controls preload="metadata">
+        <source src="IMG_0469.mov" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+      <div class="video-label">Control System & GUI Demo</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata">
+        <source src="IMG_0470.mov" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+      <div class="video-label">Temperature Regulation in Action</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata">
+        <source src="IMG_0471.mov" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+      <div class="video-label">Hydroponics & Water Circulation System</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata">
+        <source src="IMG_0472.mov" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+      <div class="video-label">Capstone Fair Demo</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata">
+        <source src="IMG_0476.mov" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+      <div class="video-label">System Overview</div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD -->
+<section id="build">
+  <div class="section-label">04 · Physical Build</div>
+  <h2>Construction & Materials</h2>
+
+  <div class="photo-grid fade-in">
+    <div>
+      <img src="grenhouse_1.jpg" alt="Greenhouse front view showing polycarbonate panels, wood frame, and hydroponic tray">
+      <div class="photo-caption">Fig. 1 — Front view: polycarbonate glazing, wood frame, hydroponic tray with drip irrigation</div>
+    </div>
+    <div>
+      <img src="greenhouse_2.jpg" alt="Greenhouse three-quarter view showing pump system, sensor array, and tubing">
+      <div class="photo-caption">Fig. 2 — Three-quarter view: pump system, sensor array, glycol tubing, and hinged access panel</div>
+    </div>
+  </div>
+
+  <div class="fade-in" style="margin-top:2rem;">
+    <h3 style="font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;">Bill of Materials</h3>
+    <table class="bom-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Description</th>
+          <th>Est. Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Raspberry Pi</td><td>Main compute unit for GUI and logging</td><td>$66.90</td></tr>
+        <tr><td>ESP32 Dev Board</td><td>Embedded microcontroller, sensor I/O, Wi-Fi</td><td>~$15</td></tr>
+        <tr><td>Polycarbonate Sheet</td><td>0.05″ thick, glazing for all faces</td><td>$15–30</td></tr>
+        <tr><td>Structural Wood</td><td>Pine frame construction</td><td>$5–20</td></tr>
+        <tr><td>Submersible Water Pump</td><td>Ultra-quiet brushless, hydroponic loop</td><td>$15</td></tr>
+        <tr><td>Water Pipes & Fittings</td><td>PVC supply lines, drip emitters</td><td>$10–15</td></tr>
+        <tr><td>Hydroponic Growing Tray</td><td>Microgreens/seedling tray with drain</td><td>$20–40</td></tr>
+        <tr><td>UV/Full-Spectrum LED Lights</td><td>Supplemental grow lighting</td><td>$11</td></tr>
+        <tr><td>Heat Radiator</td><td>Aluminum heat exchanger for glycol loop</td><td>~$15</td></tr>
+        <tr><td>Ventilation</td><td>Vent cover and circulation system</td><td>~$15</td></tr>
+        <tr><td>Misc. (fasteners, sensors, wiring)</td><td>Building materials, temp sensors, relay</td><td>~$10</td></tr>
+        <tr><td><strong>Total</strong></td><td><em>After 20% BOM reduction from design optimization</em></td><td><strong>~$194</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="findings">
+  <div class="section-label">05 · Findings & Conclusions</div>
+  <h2>Engineering Conclusions</h2>
+
+  <div class="findings-list fade-in">
+    <div class="finding">
+      <div class="finding-head">✓ Passive Solar Window</div>
+      <p>Passive solar heating exceeds 80W from May 9 to October 3 — roughly 5 months — sufficient for unaided warm-season growing without supplemental heat.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-head">✓ Glycol Loop Capacity</div>
+      <p>The modelled glycol heating loop delivers 147W of thermal output, sufficient to compensate for the ~10W passive solar minimum in deep winter, with significant margin.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-head">✓ Scalability Validated</div>
+      <p>Modular end-on-end expansion doubles glazing area and solar intake. Side-by-side expansion increases it by 1.5×. Both configurations are viable for full-year operation with a heat exchanger.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-head">✓ Control Loop Performance</div>
+      <p>The ESP32-based closed-loop system achieved ±1°C steady-state regulation, validating the control architecture for real deployment conditions.</p>
+    </div>
+    <div class="finding warn">
+      <div class="finding-head">△ Heating Unit Lead Time</div>
+      <p>The external heater did not ship in time for the capstone demonstration. The glycol heating system was validated analytically but not tested under live winter conditions.</p>
+    </div>
+    <div class="finding warn">
+      <div class="finding-head">△ Model Limitations</div>
+      <p>Solar model does not account for atmospheric refraction. Front/back face irradiance estimates are geometric approximations. Night-time supplemental heating requirements require further analysis for spring/autumn shoulder seasons.</p>
+    </div>
+  </div>
+
+  <div class="analysis-block fade-in" style="margin-top:2rem;">
+    <h3>Next Steps</h3>
+    <p>
+      Future work would focus on live winter thermal testing with the glycol loop installed, 
+      detailed insulation R-value measurement to validate the passive heat retention model, 
+      and iterating the control firmware to support adaptive setpoints based on external 
+      weather data. A scaled-up two-module prototype would directly validate the modularization 
+      analysis presented here.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>Chris Madejczyk · Engineering Physics, McMaster University · 2024</p>
+  <a href="mailto:chrismadejczyk7@gmail.com">chrismadejczyk7@gmail.com</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// Solar chart data — approximated from the actual calculation document
+const labels = [];
+const data = [];
+const startDay = 109; // May 1 approx (day 109 of year)
+for (let i = 0; i < 365; i++) {
+  const dayOfYear = (startDay + i) % 365;
+  const dt = dayOfYear - 111; // days from vernal equinox ~Apr 21
+  const theta = 23.5 * Math.sin(2 * Math.PI * dt / 365.25);
+  const lat = 63.748611;
+  const latRad = lat * Math.PI / 180;
+  const thetaRad = theta * Math.PI / 180;
+  const cosAngle = Math.cos(latRad - thetaRad);
+  const sigma = 137 * Math.max(0, cosAngle);
+  // Daylight hours
+  const val = -Math.tan(thetaRad) * Math.tan(latRad);
+  const clamped = Math.max(-1, Math.min(1, val));
+  const TD = (2 / Math.PI) * Math.acos(-clamped) * 12;
+  // Surface area in cm2 (top face 20x10 inches = 50.8 * 25.4 cm2)
+  const A = 50.8 * 25.4;
+  const ED = sigma * A * (3600 * TD / Math.PI) / 1000000; // convert mJ to kJ to W·day approx
+  const watts = ED * 2.6 * Math.PI / (3600 * TD || 1);
+  const date = new Date(2024, 0, 1);
+  date.setDate(date.getDate() + (startDay + i - 1));
+  if (i % 7 === 0) labels.push(date.toLocaleDateString('en-CA', {month:'short', day:'numeric'}));
+  else labels.push('');
+  data.push(Math.max(0, watts).toFixed(1));
+}
+
+const ctx = document.getElementById('solarChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data,
+      borderColor: '#4fc3f7',
+      backgroundColor: 'rgba(79,195,247,0.08)',
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.raw} W/day`
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#5a7080', font: { family: 'Space Mono', size: 10 }, maxRotation: 0 },
+        grid: { color: 'rgba(30,45,61,0.6)' }
+      },
+      y: {
+        ticks: { color: '#5a7080', font: { family: 'Space Mono', size: 10 }, callback: v => v + 'W' },
+        grid: { color: 'rgba(30,45,61,0.6)' },
+        min: 0, max: 150
+      }
+    }
+  }
+});
+
+// Fade-in on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

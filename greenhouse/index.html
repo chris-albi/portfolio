@@ -755,35 +755,51 @@
 
 <footer>
   <p>Chris Madejczyk · Engineering Physics, McMaster University · 2024</p>
-  <a href="mailto:chrismadejczyk7@gmail.com">chrismadejczyk7@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#284b405a415b45494c4d424b5251431f684f45494144064b4745"><span class="__cf_email__" data-cfemail="284b405a415b45494c4d424b5251431f684f45494144064b4745">[email&#160;protected]</span></a>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script>
-// Solar chart data — approximated from the actual calculation document
+// Solar chart — faithfully reproduced from the project's calculation document
+// Equations: Θ = 23.5 * sin(2π*dt/365.25), σ_D = 137 mW/cm² * cos(L - Θ)
+// Daylight: cos(π*TD/24) = -tan(Θ)*tan(L)
+// E_D = σ_D * A * (3600 * TD / π)  [mW/cm² * cm² * s = mJ, then /1000 = J]
+// Total daily watts = E_D_joules * 2.6 / (3600 * TD)  [average watts over daylight hours, scaled for all faces]
 const labels = [];
 const data = [];
-const startDay = 109; // May 1 approx (day 109 of year)
+const lat = 63.748611;
+const latRad = lat * Math.PI / 180;
+// Top face: 20" x 10" = 50.8cm x 25.4cm
+const A_cm2 = 50.8 * 25.4; // cm²
+
 for (let i = 0; i < 365; i++) {
-  const dayOfYear = (startDay + i) % 365;
-  const dt = dayOfYear - 111; // days from vernal equinox ~Apr 21
-  const theta = 23.5 * Math.sin(2 * Math.PI * dt / 365.25);
-  const lat = 63.748611;
-  const latRad = lat * Math.PI / 180;
+  // dt = days from vernal equinox (Apr 21 = day 111)
+  const dt = i - 111;
+  const theta = 23.5 * Math.sin(2 * Math.PI * dt / 365.25); // degrees
   const thetaRad = theta * Math.PI / 180;
-  const cosAngle = Math.cos(latRad - thetaRad);
-  const sigma = 137 * Math.max(0, cosAngle);
-  // Daylight hours
-  const val = -Math.tan(thetaRad) * Math.tan(latRad);
-  const clamped = Math.max(-1, Math.min(1, val));
-  const TD = (2 / Math.PI) * Math.acos(-clamped) * 12;
-  // Surface area in cm2 (top face 20x10 inches = 50.8 * 25.4 cm2)
-  const A = 50.8 * 25.4;
-  const ED = sigma * A * (3600 * TD / Math.PI) / 1000000; // convert mJ to kJ to W·day approx
-  const watts = ED * 2.6 * Math.PI / (3600 * TD || 1);
+
+  // Solar irradiance on top face (mW/cm²)
+  const sigma = 137 * Math.max(0, Math.cos(latRad - thetaRad));
+
+  // Daylight hours: cos(π*TD/24) = -tan(θ)*tan(L)
+  const cosArg = -Math.tan(thetaRad) * Math.tan(latRad);
+  const clamped = Math.max(-1, Math.min(1, cosArg));
+  const TD = (24 / Math.PI) * Math.acos(clamped); // hours
+
+  // Daily energy on top face: E_D = σ_D * A * (3600*TD/π)  [mJ]
+  const ED_mJ = sigma * A_cm2 * (3600 * TD / Math.PI);
+  const ED_J = ED_mJ / 1000; // joules
+
+  // Total energy across all 3 faces = 2.6 * ED (per the document)
+  const total_J = 2.6 * ED_J;
+
+  // Convert to average watts over the day (86400 s)
+  const watts = total_J / 86400;
+
+  // Label every 2 weeks
   const date = new Date(2024, 0, 1);
-  date.setDate(date.getDate() + (startDay + i - 1));
-  if (i % 7 === 0) labels.push(date.toLocaleDateString('en-CA', {month:'short', day:'numeric'}));
+  date.setDate(date.getDate() + i);
+  if (i % 14 === 0) labels.push(date.toLocaleDateString('en-CA', {month:'short', day:'numeric'}));
   else labels.push('');
   data.push(Math.max(0, watts).toFixed(1));
 }
@@ -829,9 +845,19 @@ new Chart(ctx, {
 
 // Fade-in on scroll
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => {
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight) el.classList.add('visible');
+  else observer.observe(el);
+});
 </script>
 </body>
 </html>

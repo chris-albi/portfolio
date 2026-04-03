@@ -94,7 +94,6 @@
     .nav-links { gap: 1.2rem; }
   }
 
-  .hero-left {}
 
   .hero-tag {
     font-family: var(--mono);
@@ -173,8 +172,9 @@
 
   .hero-visual {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 20%;
   }
 
   .hero-visual svg {
@@ -232,6 +232,26 @@
     background: #eae6de;
     border-radius: 4px;
     padding: 1.25rem 1.5rem;
+  }
+
+  .headshot-wrap {
+    width: 75%;
+    margin: 0 auto 14px;
+    border-radius: 12px;
+    padding: 4px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--border);
+  }
+
+  .headshot {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 8px;
+    display: block;
+    filter: saturate(0.88);
   }
 
   .tools-pills {
@@ -312,8 +332,6 @@
     margin-bottom: 1.25rem;
     color: var(--text);
   }
-
-  .about-aside {}
 
   .aside-block {
     background: var(--surface);
@@ -592,8 +610,6 @@
     text-align: center;
   }
 
-  .contact-link-body {}
-
   .contact-link-label {
     font-family: var(--mono);
     font-size: 0.62rem;
@@ -666,6 +682,7 @@
 
   <div class="hero-visual">
     <div class="stats-block">
+      <div class="headshot-wrap"><img src="headshot.png" alt="Chris Madejczyk" class="headshot"></div>
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-divider"></div>
@@ -906,11 +923,11 @@
       </p>
     </div>
     <div class="contact-links fade fade-delay-1">
-      <a href="/cdn-cgi/l/email-protection#b8dbd0cad1cbd5d9dcddd2dbc2c1d38ff8dfd5d9d1d496dbd7d5" class="contact-link">
+      <a href="mailto:chrismadejczyk7@gmail.com" class="contact-link">
         <span class="contact-link-icon">✉</span>
         <span class="contact-link-body">
           <span class="contact-link-label">Email</span>
-          <span class="contact-link-value"><span class="__cf_email__" data-cfemail="caa9a2b8a3b9a7abaeafa0a9b0b3a1fd8aada7aba3a6e4a9a5a7">[email&#160;protected]</span></span>
+          <span class="contact-link-value">chrismadejczyk7@gmail.com</span>
         </span>
       </a>
       <a href="https://linkedin.com/in/chris-madejczyk/" target="_blank" class="contact-link">
@@ -935,7 +952,7 @@
   Chris Madejczyk · Burlington, ON · Built with HTML/CSS/JS · 2026
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
